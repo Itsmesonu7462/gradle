@@ -83,10 +83,6 @@ public class ContextAwareException extends GradleException {
             // Show the direct cause of the last contextual cause only
             visitor.node(t);
         }
-
-        if (t instanceof ProblemAwareFailure) {
-
-        }
     }
 
     @Nullable
