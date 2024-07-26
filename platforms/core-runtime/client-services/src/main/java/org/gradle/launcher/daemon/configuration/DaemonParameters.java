@@ -18,8 +18,6 @@ package org.gradle.launcher.daemon.configuration;
 import com.google.common.collect.ImmutableList;
 import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.internal.buildconfiguration.DaemonJvmPropertiesDefaults;
-import org.gradle.internal.jvm.JpmsConfiguration;
-import org.gradle.internal.jvm.inspection.JvmVersionDetector;
 import org.gradle.internal.nativeintegration.services.NativeServices.NativeServicesMode;
 import org.gradle.jvm.toolchain.JavaLanguageVersion;
 import org.gradle.jvm.toolchain.JvmImplementation;
@@ -36,10 +34,8 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class DaemonParameters {
     static final int DEFAULT_IDLE_TIMEOUT = 3 * 60 * 60 * 1000;
@@ -151,12 +147,12 @@ public class DaemonParameters {
     }
 
     // TODO: Move this to the construction of DaemonRequestContext to avoid mutating the parameters? Is that possible?
-    public void applyDefaultsFromJvmCriteria(JvmVersionDetector detector) {
-        if (getRequestedJvmCriteria().probeJavaLanguageVersion(detector).asInt() >= 9) {
-            Set<String> jpmsArgs = new LinkedHashSet<>(ALLOW_ENVIRONMENT_VARIABLE_OVERWRITE);
-            jpmsArgs.addAll(JpmsConfiguration.GRADLE_DAEMON_JPMS_ARGS);
-            jvmOptions.jvmArgs(jpmsArgs);
-        }
+    public void applyDefaultsFromJvmCriteria() {
+//        if (getRequestedJvmCriteria().probeJavaLanguageVersion(detector).asInt() >= 9) {
+//            Set<String> jpmsArgs = new LinkedHashSet<>(ALLOW_ENVIRONMENT_VARIABLE_OVERWRITE);
+//            jpmsArgs.addAll(JpmsConfiguration.GRADLE_DAEMON_JPMS_ARGS);
+//            jvmOptions.jvmArgs(jpmsArgs);
+//        }
         if (hasJvmArgs) {
             return;
         }

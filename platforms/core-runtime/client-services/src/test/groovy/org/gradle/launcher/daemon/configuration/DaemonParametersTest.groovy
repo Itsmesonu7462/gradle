@@ -54,7 +54,7 @@ class DaemonParametersTest extends Specification {
         when:
         parameters.setJvmArgs(["-Xmx17m"])
         parameters.requestedJvmCriteria = new DaemonJvmCriteria.Spec(JavaLanguageVersion.of(8), null, null)
-        parameters.applyDefaultsFromJvmCriteria(null)
+        parameters.applyDefaultsFromJvmCriteria()
 
         then:
         parameters.effectiveJvmArgs.containsAll(["-Xmx17m"])
@@ -64,7 +64,7 @@ class DaemonParametersTest extends Specification {
     def "can apply defaults for Java 7 and earlier"() {
         when:
         parameters.requestedJvmCriteria = new DaemonJvmCriteria.Spec(JavaLanguageVersion.of(7), null, null)
-        parameters.applyDefaultsFromJvmCriteria(null)
+        parameters.applyDefaultsFromJvmCriteria()
 
         then:
         parameters.effectiveJvmArgs.containsAll(DaemonParameters.DEFAULT_JVM_ARGS)
@@ -73,7 +73,7 @@ class DaemonParametersTest extends Specification {
     def "can apply defaults for Java 8 and later"() {
         when:
         parameters.requestedJvmCriteria = new DaemonJvmCriteria.Spec(JavaLanguageVersion.of(9), null, null)
-        parameters.applyDefaultsFromJvmCriteria(null)
+        parameters.applyDefaultsFromJvmCriteria()
 
         then:
         parameters.effectiveJvmArgs.containsAll(DaemonParameters.DEFAULT_JVM_ARGS)
@@ -83,7 +83,7 @@ class DaemonParametersTest extends Specification {
     def "defaults for Java 9+ contain the --add-opens args in the form that can be matched by a user's GRADLE_OPTS"() {
         when:
         parameters.requestedJvmCriteria = new DaemonJvmCriteria.Spec(JavaLanguageVersion.of(9), null, null)
-        parameters.applyDefaultsFromJvmCriteria(null)
+        parameters.applyDefaultsFromJvmCriteria()
 
         then: "The --add-opens arguments should be in the form that can be matched by user-provided GRADLE_OPTS: --add-opens=x.y/z.a=..."
         def addOpensArgs = parameters.effectiveJvmArgs.findAll { it.startsWith("--add-opens") }
@@ -109,7 +109,7 @@ class DaemonParametersTest extends Specification {
         when:
         parameters.setDebug(true)
         parameters.requestedJvmCriteria = new DaemonJvmCriteria.Spec(jvmDefault, null, null)
-        parameters.applyDefaultsFromJvmCriteria(null)
+        parameters.applyDefaultsFromJvmCriteria()
 
         then:
         parameters.effectiveJvmArgs.contains("-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005")

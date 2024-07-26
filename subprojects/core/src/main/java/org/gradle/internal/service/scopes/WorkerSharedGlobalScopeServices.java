@@ -24,6 +24,7 @@ import org.gradle.api.internal.file.FileCollectionFactory;
 import org.gradle.api.internal.file.FileFactory;
 import org.gradle.api.internal.file.FilePropertyFactory;
 import org.gradle.api.internal.file.FileResolver;
+import org.gradle.api.internal.file.temp.TemporaryFileProvider;
 import org.gradle.api.internal.model.NamedObjectInstantiator;
 import org.gradle.api.internal.provider.DefaultPropertyFactory;
 import org.gradle.api.internal.provider.PropertyFactory;
@@ -49,6 +50,13 @@ import org.gradle.internal.hash.DefaultStreamHasher;
 import org.gradle.internal.hash.StreamHasher;
 import org.gradle.internal.installation.CurrentGradleInstallation;
 import org.gradle.internal.instantiation.InstantiatorFactory;
+import org.gradle.internal.jvm.inspection.CachingJvmMetadataDetector;
+import org.gradle.internal.jvm.inspection.DefaultJvmMetadataDetector;
+import org.gradle.internal.jvm.inspection.DefaultJvmVersionDetector;
+import org.gradle.internal.jvm.inspection.InvalidInstallationWarningReporter;
+import org.gradle.internal.jvm.inspection.JvmMetadataDetector;
+import org.gradle.internal.jvm.inspection.JvmVersionDetector;
+import org.gradle.internal.jvm.inspection.ReportingJvmMetadataDetector;
 import org.gradle.internal.logging.events.OutputEventListener;
 import org.gradle.internal.logging.progress.DefaultProgressLoggerFactory;
 import org.gradle.internal.logging.progress.ProgressLoggerFactory;
@@ -69,6 +77,7 @@ import org.gradle.internal.state.DefaultManagedFactoryRegistry;
 import org.gradle.internal.state.ManagedFactoryRegistry;
 import org.gradle.internal.time.Clock;
 import org.gradle.internal.time.Time;
+import org.gradle.process.internal.ExecHandleFactory;
 
 import static org.gradle.api.internal.file.ManagedFactories.DirectoryManagedFactory;
 import static org.gradle.api.internal.file.ManagedFactories.DirectoryPropertyManagedFactory;
@@ -92,6 +101,21 @@ public class WorkerSharedGlobalScopeServices extends BasicGlobalScopeServices {
     @Provides
     protected CacheFactory createCacheFactory(FileLockManager fileLockManager, ExecutorFactory executorFactory, BuildOperationRunner buildOperationRunner) {
         return new DefaultCacheFactory(fileLockManager, executorFactory, buildOperationRunner);
+    }
+
+    @Provides
+    JvmMetadataDetector createJvmMetadataDetector(ExecHandleFactory execHandleFactory, TemporaryFileProvider temporaryFileProvider) {
+        return new CachingJvmMetadataDetector(
+            new ReportingJvmMetadataDetector(
+                new DefaultJvmMetadataDetector(execHandleFactory, temporaryFileProvider),
+                new InvalidInstallationWarningReporter()
+            )
+        );
+    }
+
+    @Provides
+    JvmVersionDetector createJvmVersionDetector(JvmMetadataDetector detector) {
+        return new DefaultJvmVersionDetector(detector);
     }
 
     @Provides
