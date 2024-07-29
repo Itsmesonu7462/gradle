@@ -127,7 +127,7 @@ public class JdkJavaCompiler implements Compiler<JavaCompileSpec>, Serializable 
     private void buildProblemFrom(RuntimeException ex, ProblemSpec spec) {
         spec.severity(Severity.ERROR);
         spec.id("initialization-failed", "Java compilation initialization error", GradleCoreProblemGroup.compilation().java());
-        spec.details(ex.getLocalizedMessage());
+        spec.contextualLabel(ex.getLocalizedMessage());
         spec.withException(ex);
     }
 
