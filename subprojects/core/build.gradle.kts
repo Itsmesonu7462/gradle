@@ -110,7 +110,6 @@ dependencies {
     api(projects.normalizationJava)
     api(projects.persistentCache)
     api(projects.problemsApi)
-    api(projects.problemsRendering)
     api(projects.processServices)
     api(projects.resources)
     api(projects.snapshots)
