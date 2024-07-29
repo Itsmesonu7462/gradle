@@ -18,6 +18,7 @@ package org.gradle.api.internal.tasks.compile;
 import org.gradle.api.problems.internal.ProblemAwareFailure;
 import org.gradle.api.problems.internal.Problem;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -26,6 +27,10 @@ public class CompilationFailedException extends RuntimeException implements Prob
 
     private final ApiCompilerResult compilerPartialResult;
     private final Collection<Problem> reportedProblems;
+
+    public CompilationFailedException() {
+        this((ApiCompilerResult) null);
+    }
 
     public CompilationFailedException(int exitCode) {
         super(String.format("Compilation failed with exit code %d; see the compiler error output for details.", exitCode));
@@ -39,13 +44,13 @@ public class CompilationFailedException extends RuntimeException implements Prob
         this.reportedProblems = Collections.emptyList();
     }
 
-    public CompilationFailedException(ApiCompilerResult result) {
+    public CompilationFailedException(@Nullable ApiCompilerResult result) {
         super("Compilation failed without any reported problems.");
         this.compilerPartialResult = result;
         this.reportedProblems = Collections.emptyList();
     }
 
-    public CompilationFailedException(ApiCompilerResult result, Collection<Problem> reportedProblems) {
+    public CompilationFailedException(@Nullable ApiCompilerResult result, Collection<Problem> reportedProblems) {
         super("Compilation failed with reported problems; see the problem details below.");
         this.compilerPartialResult = result;
         this.reportedProblems = reportedProblems;
