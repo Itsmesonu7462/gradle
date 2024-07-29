@@ -28,9 +28,9 @@ pluginManagement {
 
 plugins {
     id("gradlebuild.build-environment")
-    id("com.gradle.develocity").version("3.17.5") // Sync with `build-logic-commons/build-platform/build.gradle.kts`
+    id("com.gradle.develocity").version("3.17.6") // Run `build-logic-settings/update-develocity-plugin-version.sh <new-version>` to update
     id("io.github.gradle.gradle-enterprise-conventions-plugin").version("0.10.1")
-    id("org.gradle.toolchains.foojay-resolver-convention") version ("0.8.0")
+    id("org.gradle.toolchains.foojay-resolver-convention").version ("0.8.0")
 }
 
 includeBuild("build-logic-commons")
@@ -135,6 +135,7 @@ val core = platform("core") {
         subproject("declarative-dsl-tooling-models")
         subproject("declarative-dsl-tooling-builders")
         subproject("dependency-management-serialization-codecs")
+        subproject("encryption-services")
         subproject("file-collections")
         subproject("flow-services")
         subproject("graph-serialization")

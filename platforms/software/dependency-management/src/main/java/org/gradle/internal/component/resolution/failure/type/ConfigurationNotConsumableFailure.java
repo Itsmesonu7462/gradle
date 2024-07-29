@@ -17,6 +17,7 @@
 package org.gradle.internal.component.resolution.failure.type;
 
 import org.gradle.api.artifacts.component.ComponentIdentifier;
+import org.gradle.api.internal.catalog.problems.ResolutionFailureProblemId;
 import org.gradle.internal.component.resolution.failure.interfaces.VariantSelectionByNameFailure;
 
 /**
@@ -27,6 +28,6 @@ import org.gradle.internal.component.resolution.failure.interfaces.VariantSelect
  */
 public final class ConfigurationNotConsumableFailure extends AbstractVariantSelectionByNameFailure {
     public ConfigurationNotConsumableFailure(ComponentIdentifier targetComponent, String requestedConfigurationName) {
-        super(targetComponent, requestedConfigurationName);
+        super(ResolutionFailureProblemId.CONFIGURATION_NOT_CONSUMABLE, targetComponent, requestedConfigurationName);
     }
 }

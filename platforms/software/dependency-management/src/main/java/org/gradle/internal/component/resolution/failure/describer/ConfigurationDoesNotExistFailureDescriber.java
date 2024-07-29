@@ -39,7 +39,7 @@ public abstract class ConfigurationDoesNotExistFailureDescriber extends Abstract
         if (isLocalComponent) {
             ProjectComponentIdentifierInternal id = (ProjectComponentIdentifierInternal) failure.getTargetComponent();
             Path outgoingVariantsPath = id.getIdentityPath().append(Path.path("outgoingVariants"));
-            resolutions.add("To determine which configurations are available in the target project, run " + outgoingVariantsPath.getPath());
+            resolutions.add("To determine which configurations are available in the target " + failure.getTargetComponent().getDisplayName() + ", run " + outgoingVariantsPath.getPath() + ".");
         }
 
         resolutions.addAll(buildResolutions(suggestReviewAlgorithm()));
@@ -52,5 +52,10 @@ public abstract class ConfigurationDoesNotExistFailureDescriber extends Abstract
             failure.getRequestedConfigurationName(),
             failure.getTargetComponent().getDisplayName()
         );
+    }
+
+    private String quoteNameOnly(String formattedId) {
+        int projectIdIdx = formattedId.indexOf("project ");
+        return projectIdIdx < 0 ? '\'' + formattedId + '\'' : formattedId.substring(0, projectIdIdx + 8) + '\'' + formattedId.substring(projectIdIdx + 8) + '\'';
     }
 }
