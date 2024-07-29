@@ -316,7 +316,7 @@ ${fooFileLocation}:9: warning: [cast] redundant cast to $expectedType
         disableProblemsApiCheck()
 
         given:
-        def generator = new ProblematicClassGenerator("Foo")
+        def generator = new ProblematicClassGenerator(testDirectory, "Foo")
         generator.save()
 
         when:
@@ -330,7 +330,7 @@ ${fooFileLocation}:9: warning: [cast] redundant cast to $expectedType
         disableProblemsApiCheck()
 
         given:
-        def generator = new ProblematicClassGenerator()
+        def generator = new ProblematicClassGenerator(testDirectory)
         for (int i = 1; i <= warningCount; i++) {
             generator.addWarning()
         }
@@ -352,7 +352,7 @@ ${fooFileLocation}:9: warning: [cast] redundant cast to $expectedType
         disableProblemsApiCheck()
 
         given:
-        def generator = new ProblematicClassGenerator()
+        def generator = new ProblematicClassGenerator(testDirectory)
         generator.save()
 
         when:
@@ -390,7 +390,7 @@ ${fooFileLocation}:9: warning: [cast] redundant cast to $expectedType
         given:
         setupAnnotationProcessors(JavaVersion.VERSION_1_8)
 
-        def generator = new ProblematicClassGenerator("Foo")
+        def generator = new ProblematicClassGenerator(testDirectory, "Foo")
         generator.addWarning()
         generator.save()
         possibleFileLocations.put(generator.sourceFile.absolutePath, 1)
