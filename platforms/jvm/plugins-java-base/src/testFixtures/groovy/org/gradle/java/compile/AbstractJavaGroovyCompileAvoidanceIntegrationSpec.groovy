@@ -743,7 +743,7 @@ abstract class AbstractJavaGroovyCompileAvoidanceIntegrationSpec extends Abstrac
         fails ":${language.compileTaskName}"
 
         then:
-        failure.assertHasCause('Compilation failed; see the compiler error output for details.')
+        failure.assertHasCause('Compilation failed with reported problems; see the problem details below.')
     }
 
     def "detects changes in compile classpath order"() {
@@ -801,7 +801,7 @@ abstract class AbstractJavaGroovyCompileAvoidanceIntegrationSpec extends Abstrac
         fails ":${language.compileTaskName}"
 
         then:
-        failure.assertHasCause('Compilation failed; see the compiler error output for details.')
+        failure.assertHasCause('Compilation failed with reported problems; see the problem details below.')
     }
 
     @Issue("https://github.com/gradle/gradle/issues/20398")

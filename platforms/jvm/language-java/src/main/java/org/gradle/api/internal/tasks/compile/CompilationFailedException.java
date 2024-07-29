@@ -40,11 +40,13 @@ public class CompilationFailedException extends RuntimeException implements Prob
     }
 
     public CompilationFailedException(ApiCompilerResult result) {
+        super("Compilation failed without any reported problems.");
         this.compilerPartialResult = result;
         this.reportedProblems = Collections.emptyList();
     }
 
     public CompilationFailedException(ApiCompilerResult result, Collection<Problem> reportedProblems) {
+        super("Compilation failed with reported problems; see the problem details below.");
         this.compilerPartialResult = result;
         this.reportedProblems = reportedProblems;
     }
