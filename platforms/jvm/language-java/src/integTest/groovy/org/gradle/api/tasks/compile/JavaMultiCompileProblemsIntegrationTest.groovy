@@ -39,7 +39,7 @@ class JavaMultiCompileProblemsIntegrationTest extends AbstractIntegrationSpec {
         project1Dir.file("build.gradle") << """
             apply plugin: 'java'
         """
-        def project1ProblematicTestGenerator = new ProblematicClassGenerator(project1Dir)
+        def project1ProblematicTestGenerator = new ProblematicClassGenerator(project1Dir, "Project1")
         project1ProblematicTestGenerator.addError()
         project1ProblematicTestGenerator.save()
 
@@ -47,11 +47,8 @@ class JavaMultiCompileProblemsIntegrationTest extends AbstractIntegrationSpec {
         project2Dir.file("build.gradle") << """
             apply plugin: 'java'
         """
-        def project2ProblematicTestGeneratorFoo = new ProblematicClassGenerator(project2Dir, "Foo")
-        project2ProblematicTestGeneratorFoo.addError()
-        project2ProblematicTestGeneratorFoo.save()
-        def project2ProblematicTestGeneratorBar = new ProblematicClassGenerator(project2Dir, "Bar")
-        project2ProblematicTestGeneratorBar.addWarning()
+        def project2ProblematicTestGeneratorBar = new ProblematicClassGenerator(project2Dir, "Project2")
+        project2ProblematicTestGeneratorBar.addError()
         project2ProblematicTestGeneratorBar.save()
 
         when:
@@ -59,7 +56,24 @@ class JavaMultiCompileProblemsIntegrationTest extends AbstractIntegrationSpec {
 
         then:
         // Total 2 problems, 1 per project
+        failure.assertHasFailures(2)
         collectedProblems.size() == 2
+        verifyAll(receivedProblem(0)) {
+            fqid == 'compilation:java:java-compilation-error'
+            contextualLabel == '\';\' expected'
+            // The formatted information is checked deeper in JavaCompileProblemsIntegrationTest,
+            // we are just interested if the file is correct
+            def formatted = additionalData.asMap['formatted'] as String
+            formatted.contains("Project1.java")
+        }
+        verifyAll(receivedProblem(1)) {
+            fqid == 'compilation:java:java-compilation-error'
+            contextualLabel == '\';\' expected'
+            // The formatted information is checked deeper in JavaCompileProblemsIntegrationTest,
+            // we are just interested if the file is correct
+            def formatted = additionalData.asMap['formatted'] as String
+            formatted.contains("Project2.java")
+        }
     }
 
 }
