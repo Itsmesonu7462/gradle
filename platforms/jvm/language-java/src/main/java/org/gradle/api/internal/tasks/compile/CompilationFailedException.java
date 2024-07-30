@@ -45,7 +45,7 @@ public class CompilationFailedException extends RuntimeException implements Prob
     }
 
     public CompilationFailedException(@Nullable ApiCompilerResult result) {
-        super("Compilation failed without any reported problems.");
+        super("Compilation failed; see the compiler error output for details.");
         this.compilerPartialResult = result;
         this.reportedProblems = Collections.emptyList();
     }

@@ -611,7 +611,7 @@ ${compilerConfiguration()}
     abstract String compilerConfiguration()
 
     String getCompilationFailureMessage() {
-        return "Compilation failed with reported problems; see the problem details below."
+        return "Compilation failed; see the compiler error output for details."
     }
 
     boolean versionLowerThan(String other) {
